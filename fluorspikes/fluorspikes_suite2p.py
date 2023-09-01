@@ -873,14 +873,14 @@ class MainWindow(QtWidgets.QMainWindow):
             fs = self.F3[this_cell]
         self.p5.plot(ts, fs, pen=0.5)  # Gray
         if self.par.child('Transient').param('rising').value():
-            tt = self.Gr_[this_cell]  # Indicate the 1st peak of each transient
+            tt = self.Gr_[this_cell]  # Indicate the transient start time
+            self.p5.plot(ts, fs, connect=self.Gr[this_cell], pen='r')  # Red
         else:
             tt = self.G_[this_cell]
-        n_events = np.sum(tt)  # Transient start time
+            self.p5.plot(ts, fs, connect=self.G[this_cell], pen='r')  # Red
+        n_events = np.sum(tt)
         # stems = np.vstack([np.zeros(n_events), fs[tt]]).ravel(order='F')
         # self.p5.plot(np.repeat(ts[tt],2), stems, connect='pairs', pen='r')  # Stem plot
-        self.p5.plot(ts, fs, pen=0.5)  # Gray
-        self.p5.plot(ts, fs, connect=self.G[this_cell], pen='r')  # Red
         self.label3.setText('Transient (events/min) : %.4g' % (60*n_events/(self.T/self.fps)))
 
     def change_cell(self):
